@@ -43,6 +43,24 @@
 >
 > Every change against upstream is documented in [`docs/CHANGES.md`](docs/CHANGES.md).
 
+## Main changes in this fork
+
+- Thermal cutoff was backwards — it cut power to zero at the threshold, then applied braking above it. Fixed.
+- A full 15S battery read as 6.4 V because the voltage counter overflowed. Fixed.
+- Saving app settings from VESC Tool killed throttle and brake until reboot. Fixed.
+- The motor current loop was 7.6× too slow. Fixed.
+- Battery current limit cut in 25 % early — 35 A behaved like 26 A. Fixed.
+- Feed forward now works: four bugs fixed, one of which caused a runaway on throttle release.
+- No more jolt when you open the throttle after coasting.
+- Crashes now stop the motor and blink a code instead of failing silently.
+- Free RAM: 64 bytes → 3 KB.
+- Display now shows controller temperature and power.
+
+Full detail, including known limitations: [`docs/CHANGES.md`](docs/CHANGES.md).
+Download: [latest release](https://github.com/bobecek79/SmartESC_STM32_v2/releases/latest)
+
+---
+
 # SmartESC
 
 **SmartESC (aka SESC) is an alternative firmware for Xiaomi M365 and Ninebot G30 controller.**
