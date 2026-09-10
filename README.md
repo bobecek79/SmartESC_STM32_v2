@@ -1,47 +1,45 @@
-> ## ⚠️ Fork for one specific hardware-modified board — do not flash on a stock controller
->
-> This is a personal fork of [Koxx3/SmartESC_STM32_v2](https://github.com/Koxx3/SmartESC_STM32_v2)
-> (branch `vesc_comp`), modified for a **hardware-modified** Xiaomi M365 controller.
-> It is not a general-purpose build and it is **not safe on an unmodified controller.**
->
-> The firmware assumes these board changes. Several of them are compiled in, not configurable:
->
-> | Change | This build assumes | Stock M365 |
-> |---|---|---|
-> | Shunts | doubled in parallel, **1 mΩ** | 2 mΩ |
-> | Battery | **15S, 63 V** full charge | 10S, 42 V |
-> | MOSFETs | **IRFB4110**, 100 V | stock parts |
-> | Bulk capacitor | **1000 µF, 100 V** | stock |
-> | Vin regulator cap | **100 V part** | stock |
-> | Battery divider | R41 **1M** (was 100k), R44 **33k** (was 6.2k) | 100k / 6.2k |
-> | Phase V-sense † | R19/R21/R22 **68k** (was 22k), R6 **39k** (was 20k) | 22k / 20k |
-> | Motor | Xiaomi **Scooter 4** hub motor, 10" wheel | M365 motor |
-> | Display | custom **ESP32** on the half-duplex UART, M365 0x64/0x65 protocol | stock M365 display |
->
-> † Phase V-sense is the one row that does not change firmware behaviour — those ADC
-> channels are read by nothing. It is pin protection for the higher pack voltage.
->
-> **On a stock controller every current reading is halved, so every real current
-> limit doubles** — into stock FETs and a 10S pack. The battery voltage divider is
-> also calibrated for the modified one, so voltage and every cutoff derived from it
-> will be wrong.
->
-> There is also **no motor temperature protection** in this firmware: `l_temp_motor_start`
-> and `l_temp_motor_end` are stored but read by nothing, and the motor temperature
-> readback is hardcoded to 0.
->
-> If your controller is stock, use [the upstream project](https://github.com/Koxx3/SmartESC_STM32_v2)
-> instead. No support, no warranty — this runs a vehicle, and you are responsible for
-> what you flash.
->
-> **The Ninebot G30 target (`g30p`) was not worked on at all.** Nothing here was
-> written, built or tested for it, and it does not even link — `g30p` was already
-> 24 bytes over its 20 K RAM budget on the clean upstream clone, before any change
-> here, and the added fault-detection globals take it to 48. The `g30p/` directory
-> is carried along only because both targets share `common_files/`. For a G30, use
-> [the upstream project](https://github.com/Koxx3/SmartESC_STM32_v2).
->
-> Every change against upstream is documented in [`docs/CHANGES.md`](docs/CHANGES.md).
+## ⚠️ Fork for one specific hardware-modified board — do not flash on a stock controller
+
+This is a personal fork of [Koxx3/SmartESC_STM32_v2](https://github.com/Koxx3/SmartESC_STM32_v2)
+(branch `vesc_comp`), modified for a **hardware-modified** Xiaomi M365 controller.
+It is not a general-purpose build and it is **not safe on an unmodified controller.**
+
+The firmware assumes these board changes. Several of them are compiled in, not configurable:
+
+| Change | This build assumes | Stock M365 |
+|---|---|---|
+| Shunts | doubled in parallel, **1 mΩ** | 2 mΩ |
+| Battery | **15S, 63 V** full charge | 10S, 42 V |
+| MOSFETs | **IRFB4110**, 100 V | stock parts |
+| Bulk capacitor | **1000 µF, 100 V** | stock |
+| Vin regulator cap | **100 V part** | stock |
+| Battery divider | R41 **1M** (was 100k), R44 **33k** (was 6.2k) | 100k / 6.2k |
+| Phase V-sense † | R19/R21/R22 **68k** (was 22k), R6 **39k** (was 20k) | 22k / 20k |
+| Motor | Xiaomi **Scooter 4** hub motor, 10" wheel | M365 motor |
+Display | custom **ESP32** on the half-duplex UART, M365 0x64/0x65 protocol | stock M365 display |
+
+† Phase V-sense is the one row that does not change firmware behaviour — those ADC
+channels are read by nothing. It is pin protection for the higher pack voltage.
+
+**On a stock controller every current reading is halved, so every real current
+limit doubles** — into stock FETs and a 10S pack. The battery voltage divider is
+also calibrated for the modified one, so voltage and every cutoff derived from it
+will be wrong.
+
+There is also **no motor temperature protection** in this firmware: `l_temp_motor_start`
+and `l_temp_motor_end` are stored but read by nothing, and the motor temperature
+readback is hardcoded to 0.
+
+If your controller is stock, use [the upstream project](https://github.com/Koxx3/SmartESC_STM32_v2)
+instead. No support, no warranty — this runs a vehicle, and you are responsible for
+that you flash.
+
+**The Ninebot G30 target (`g30p`) was not worked on at all.** Nothing here was
+written, built or tested for it, and it does not even link — `g30p` was already
+24 bytes over its 20 K RAM budget on the clean upstream clone, before any change
+here, and the added fault-detection globals take it to 48. The `g30p/` directory
+is carried along only because both targets share `common_files/`. For a G30, use
+[the upstream project](https://github.com/Koxx3/SmartESC_STM32_v2).
 
 ## Main changes in this fork
 
@@ -54,10 +52,8 @@
 - No more jolt when you open the throttle after coasting.
 - Crashes now stop the motor and blink a code instead of failing silently.
 - Free RAM: 64 bytes → 3 KB.
-- Display now shows controller temperature and power.
 
-Full detail, including known limitations: [`docs/CHANGES.md`](docs/CHANGES.md).
-Download: [latest release](https://github.com/bobecek79/SmartESC_STM32_v2/releases/latest)
+Every change against upstream is documented in [`docs/CHANGES.md`](docs/CHANGES.md).
 
 ---
 
