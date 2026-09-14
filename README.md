@@ -1,20 +1,20 @@
-## ⚠️ Fork for one specific hardware-modified board — do not flash on a stock controller
+For one specific hardware-modified board — do not flash on a stock controller
 
 This is a personal fork of [Koxx3/SmartESC_STM32_v2](https://github.com/Koxx3/SmartESC_STM32_v2)
-(branch `vesc_comp`), modified for a **hardware-modified** Xiaomi M365 controller.
-It is not a general-purpose build and it is **not safe on an unmodified controller.**
+(branch `vesc_comp`), for a **hardware-modified** Xiaomi M365 controller.
+It is not a general-purpose build and it is **not safe on the stock controller.**
 
-The firmware assumes these board changes. Several of them are compiled in, not configurable:
+The firmware assumes these board changes. Several of them are compiled in, not configurable in vesctool:
 
 | Change | This build assumes | Stock M365 |
 |---|---|---|
-| Shunts | doubled in parallel, **1 mΩ** | 2 mΩ |
+| Shunts | 1 mΩ | 2 mΩ |
 | Battery | **15S, 63 V** full charge | 10S, 42 V |
 | MOSFETs | **IRFB4110**, 100 V | stock parts |
-| Bulk capacitor | **1000 µF, 100 V** | stock |
-| Vin regulator cap | **100 V part** | stock |
-| Battery divider | R41 **1M** (was 100k), R44 **33k** (was 6.2k) | 100k / 6.2k |
-| Phase V-sense † | R19/R21/R22 **68k** (was 22k), R6 **39k** (was 20k) | 22k / 20k |
+| Bulk capacitor | **1000 µF, 100 V** | 63 V stock |
+| Vin regulator cap | **100 V part** | 63 V stock |
+| Battery divider | R41 **1M**, R44 **33k** | 100k / 6.2k |
+| Phase V-sense † | R19/R21/R22 **68k** , R6 **39k** | 22k / 20k |
 | Motor | Xiaomi **Scooter 4** hub motor, 10" wheel | M365 motor |
 Display | custom **ESP32** on the half-duplex UART, M365 0x64/0x65 protocol | stock M365 display |
 
@@ -31,8 +31,7 @@ and `l_temp_motor_end` are stored but read by nothing, and the motor temperature
 readback is hardcoded to 0.
 
 If your controller is stock, use [the upstream project](https://github.com/Koxx3/SmartESC_STM32_v2)
-instead. No support, no warranty — this runs a vehicle, and you are responsible for
-that you flash.
+instead. Or clone this repo and modify the values for the stock configuration. No support, no warranty and you are responsible for what you flash.
 
 **The Ninebot G30 target (`g30p`) was not worked on at all.** Nothing here was
 written, built or tested for it, and it does not even link — `g30p` was already
